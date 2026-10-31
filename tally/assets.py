@@ -96,26 +96,37 @@ def off_product_image(term, min_side=300):
     return None, None
 
 
-def segment_image(img, text, work="/content/_seg"):
-    """Single-image segmentation with the SAM 3.1 video predictor (1-frame 'video').
+def _masks_from(outputs):
+    o = outputs or {}
+    probs = o.get("out_probs", [])
+    masks = o.get("out_binary_masks", [])
+    return [(float(p), np.asarray(m).squeeze().astype(np.uint8)) for p, m in zip(probs, masks)]
+
+
+def segment_image(img, text, work="/content/_seg", copies=3):
+    """Single-image segmentation with the SAM 3.1 video predictor.
+    The image is written as a short 3-frame clip (the 1-frame case returns no masks).
     Returns the most confident mask (bool HxW) or None."""
     os.makedirs(work, exist_ok=True)
     for f in os.listdir(work):
         os.remove(os.path.join(work, f))
-    cv2.imwrite(os.path.join(work, "00000.jpg"), img)
+    for i in range(copies):
+        cv2.imwrite(os.path.join(work, f"{i:05d}.jpg"), img)
     pred = P.get_predictor()
     sid = pred.handle_request({"type": "start_session", "resource_path": work})["session_id"]
-    pred.handle_request({"type": "add_prompt", "session_id": sid, "frame_index": 0, "text": text})
-    best, best_score = None, 0.0
+    resp = pred.handle_request({"type": "add_prompt", "session_id": sid, "frame_index": 0, "text": text})
+    cands = _masks_from((resp or {}).get("outputs"))
     for out in pred.handle_stream_request({"type": "propagate_in_video", "session_id": sid}):
-        o = out["outputs"]
-        for p, m in zip(o["out_probs"], o["out_binary_masks"]):
-            m = np.asarray(m).squeeze().astype(np.uint8)
-            score = float(p) * (m.sum() ** 0.5)
-            if score > best_score:
-                best, best_score = m, score
-        break
+        if int(out["frame_index"]) == 0:
+            cands += _masks_from(out["outputs"])
     pred.handle_request({"type": "close_session", "session_id": sid})
+    best, best_score = None, 0.0
+    for p, m in cands:
+        if m.ndim != 2 or m.sum() == 0:
+            continue
+        score = p * (m.sum() ** 0.5)
+        if score > best_score:
+            best, best_score = m, score
     if best is None:
         return None
     return cv2.resize(best, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_NEAREST).astype(bool)
@@ -143,11 +154,13 @@ def harvest(out_dir, frames_dir, products=PRODUCTS, hand_frame=30, max_side=400)
             continue
         s = max_side / max(img.shape[:2])
         img = cv2.resize(img, None, fx=s, fy=s) if s < 1 else img
+        os.makedirs(os.path.join(out_dir, "raw"), exist_ok=True)
+        cv2.imwrite(os.path.join(out_dir, "raw", f"{name}.jpg"), img)
         mask = segment_image(img, prompt) if prompt else None
         if mask is None or mask.mean() < 0.05:
             mask = segment_image(img, "product")
         if mask is None or mask.mean() < 0.05:
-            failed.append(name)
+            failed.append(f"{name}(src={info['source']},mask={0 if mask is None else round(float(mask.mean()), 3)})")
             continue
         cv2.imwrite(os.path.join(out_dir, f"{name}.png"), cutout(img, mask))
         info["sam_prompt"] = prompt
