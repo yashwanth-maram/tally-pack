@@ -1,0 +1,8 @@
+numpy>=2.1,<2.3
+opencv-python
+timm>=1.0.17
+ftfy==6.1.1
+regex
+iopath
+huggingface_hub
+# SAM 3.1: git clone https://github.com/facebookresearch/sam3 (add to sys.path, do not pip install -e)
