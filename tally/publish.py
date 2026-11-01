@@ -110,3 +110,53 @@ def build_space(space_dir, repo_dir, show_dir, gts, tracks_dir, frames_root, ref
     open(f"{space_dir}/README.md", "w").write(SPACE_README.format(gradio=gradio_version))
     mb = sum(os.path.getsize(p) for p in glob.glob(f"{space_dir}/**/*", recursive=True) if os.path.isfile(p)) / 1e6
     return {"clips": len(clips), "contracts": len(contracts), "size_mb": round(mb, 1)}
+
+
+# ------------------------------------------------------------------ GitHub Pages: static, always-on live demo
+def static_verdict(order, clip):
+    """Python twin of verify() in site_index.html: integrity issues -> NEEDS_REVIEW, else C1 diff."""
+    if clip["integrity"]:
+        return "NEEDS_REVIEW"
+    keys = set(order) | set(clip["counts"])
+    return "FAIL" if any(clip["counts"].get(s, 0) != order.get(s, 0) for s in keys) else "PASS"
+
+
+def build_pages(docs_dir, show_dir, space_data_dir, contracts, eval_numbers, width=1440, crf=27):
+    """docs/index.html + docs/demo/{data.json, *.mp4}. Verifier facts per clip are precomputed with the real
+    agent.audit; the page re-applies the same order check in JS. Returns a cross-check against agent.audit."""
+    from . import agent as A
+    from . import contract as C
+    os.makedirs(f"{docs_dir}/demo", exist_ok=True)
+    cat_all = {}
+    for sku, info in C.CATALOG.items():
+        cat_all.setdefault(C.CATEGORY_PROMPTS[info["category"]], []).append(sku)
+    raw = json.load(open(f"{space_data_dir}/clips.json"))
+    clips, tracks, asgs = {}, {}, {}
+    for name, c in raw.items():
+        tracks[name] = P.load_tracks(f"{space_data_dir}/tracks/{name}.json")
+        asgs[name] = {p: {int(k): v for k, v in d.items()} for p, d in c["assignment"].items()}
+        rep = A.audit(tracks[name], {}, cat_all, None, None, assignment=asgs[name])
+        clips[name] = {"scenario": c["scenario"], "in_box": c["in_box"], "expected": c["expected"],
+                       "counts": rep["counts"], "integrity": [v["detail"] for v in rep["violations"] if v["check"] != "C1_order"]}
+    agree = total = 0
+    for con in contracts.values():
+        for name in clips:
+            total += 1
+            agree += A.audit(tracks[name], con["order"], cat_all, None, None, assignment=asgs[name])["verdict"] == \
+                static_verdict(con["order"], clips[name])
+    stories = []
+    for p in sorted(glob.glob(f"{show_dir}/*.json")):
+        s = json.load(open(p))
+        src = s["video"] if os.path.exists(s["video"]) else f"{show_dir}/{os.path.basename(s['video'])}"
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-vf", f"scale={width}:-2", "-c:v", "libx264",
+                        "-preset", "veryfast", "-crf", str(crf), "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an",
+                        f"{docs_dir}/demo/{s['key']}.mp4"], check=True)
+        s["video"] = f"demo/{s['key']}.mp4"
+        stories.append(s)
+    data = {"stories": stories, "clips": clips, "contracts": contracts, "catalog": C.CATALOG, "aliases": C.ALIASES,
+            "numbers": C.NUMBER_WORDS, "numbers_eval": eval_numbers}
+    json.dump(data, open(f"{docs_dir}/demo/data.json", "w"), default=str)
+    shutil.copy(os.path.join(os.path.dirname(__file__), "site_index.html"), f"{docs_dir}/index.html")
+    open(f"{docs_dir}/.nojekyll", "w").close()
+    mb = sum(os.path.getsize(f) for f in glob.glob(f"{docs_dir}/demo/*")) / 1e6
+    return {"clips": len(clips), "stories": len(stories), "demo_mb": round(mb, 1), "js_vs_python_agree": f"{agree}/{total}"}

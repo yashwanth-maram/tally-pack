@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tally Pack: camera-verified order packing (SAM 3.1 + Muse Glimmer)</title>
+<meta name="description" content="Muse places the order. Tally proves it was packed right. SAM 3.1 tracks every item, a deterministic verifier proves the box, Muse Glimmer repairs perception errors.">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--card2:#1c2230;--line:#30363d;--fg:#e6edf3;--mut:#8b949e;--acc:#f97316;--blue:#2f81f7;
+--pass:#16a34a;--fail:#dc2626;--rev:#d97706;--r:14px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:5;background:rgba(13,17,23,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:22px;height:56px}
+nav b{font-size:17px}nav .sp{flex:1}nav a{color:var(--mut);font-size:14px}nav a:hover{color:var(--fg);text-decoration:none}
+.hero{padding:56px 0 28px;text-align:center}
+.hero h1{font-size:52px;margin:0;letter-spacing:-1px}
+.hero .tag{font-size:22px;color:var(--acc);margin:8px 0 14px;font-weight:600}
+.hero p{max-width:760px;margin:0 auto;color:#c9d1d9;font-size:17px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);font-weight:600}
+.btn:hover{text-decoration:none;border-color:var(--mut)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#111}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:center}
+.stat .n{font-size:30px;font-weight:800}.stat .l{color:var(--mut);font-size:13px}
+section{padding:34px 0}h2{font-size:28px;margin:0 0 6px}.sub{color:var(--mut);margin:0 0 18px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--card2)}
+.tab{padding:14px 20px;cursor:pointer;color:var(--mut);font-weight:600;border-bottom:2px solid transparent}
+.tab.on{color:var(--fg);border-color:var(--acc)}
+.pane{display:none;padding:18px}.pane.on{display:block}
+.cases{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.case{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:13px;display:flex;gap:7px;align-items:center}
+.case.on{border-color:var(--acc);background:#2a1a0e}
+.dot{width:9px;height:9px;border-radius:50%}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px}
+video{width:100%;border-radius:12px;border:1px solid var(--line);background:#000;display:block}
+.badge{border-radius:12px;padding:16px;text-align:center;font-size:30px;font-weight:800;color:#fff;letter-spacing:1px}
+.why{margin:10px 0 14px;color:#c9d1d9}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:600}
+td.ok{color:#4ade80}td.bad{color:#f87171;font-weight:700}
+.tl{margin-top:16px;border-left:2px solid var(--line);padding-left:16px}
+.st{position:relative;margin:0 0 12px}
+.st:before{content:"";position:absolute;left:-23px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--mut)}
+.st.g:before{background:var(--acc)}.st.v:before{background:var(--blue)}.st.p:before{background:var(--pass)}.st.f:before{background:var(--fail)}.st.r:before{background:var(--rev)}
+.st b{display:block}.st i{color:var(--mut)}
+details{margin-top:14px}summary{cursor:pointer;color:var(--mut)}
+textarea,select{width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
+textarea{min-height:70px;resize:vertical}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{font-size:13px;padding:6px 10px;border-radius:999px;background:#2a1a0e;border:1px solid #7c3a12;color:#fdba74;cursor:pointer}
+.row{display:grid;grid-template-columns:2fr 1fr auto;gap:12px;align-items:end}
+label{font-size:13px;color:var(--mut);display:block;margin-bottom:6px}
+.go{padding:12px 18px;border-radius:10px;border:0;background:var(--acc);color:#111;font-weight:800;cursor:pointer;font-size:15px}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:13px;margin:6px 0 0}
+.src{font-size:12px;padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:6px}
+.src.g{background:#2a1a0e;color:#fdba74}.src.k{background:#1f2937;color:#cbd5e1}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.fb{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;position:relative}
+.fb.m{border-color:#9a3412;background:#1f150d}.fb h4{margin:0 0 6px;font-size:15px}.fb p{margin:0;color:var(--mut);font-size:13.5px}
+.fb .k{font-size:11px;color:var(--acc);font-weight:700;letter-spacing:.5px}
+.rule{margin-top:16px;padding:14px 16px;border-radius:12px;background:#1f150d;border:1px solid #9a3412;color:#fdba74;font-weight:600}
+.note{color:var(--mut);font-size:13px;margin-top:10px}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--mut);text-align:center;font-size:14px}
+@media (max-width:860px){.grid,.row,.flow,.stats{grid-template-columns:1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>📦 Tally Pack</b><span class="sp"></span>
+<a href="#demo">Live demo</a><a href="#how">How it works</a><a href="#results">Results</a>
+<a href="https://github.com/yashwanth-maram/tally-pack">GitHub</a></div></nav>
+
+<header class="hero wrap">
+<h1>📦 Tally Pack</h1>
+<div class="tag">Muse places the order. Tally proves it was packed right.</div>
+<p>A fixed camera watches the packing desk. <b>SAM 3.1</b> tracks every item, a deterministic ledger proves the box
+matches the order, and <b>Muse Glimmer 30B</b> investigates only when the evidence doesn't add up. It never gives a false clearance.</p>
+<div class="btns">
+<a class="btn pri" href="#demo">▶ Try the live demo</a>
+<a class="btn" href="https://github.com/yashwanth-maram/tally-pack/blob/main/docs/tally_pack_demo.mp4">🎬 3-minute video</a>
+<a class="btn" href="https://github.com/yashwanth-maram/tally-pack">⭐ Code on GitHub</a>
+</div>
+<div class="stats" id="stats"></div>
+</header>
+
+<section id="demo"><div class="wrap">
+<h2>Live demo</h2>
+<p class="sub">Everything below runs in your browser. The videos are real outputs of SAM 3.1 and Muse Glimmer 30B on an A100.
+In the second tab, the verifier checks a packed box against any order you type.</p>
+<div class="panel">
+<div class="tabs"><div class="tab on" data-t="p1">🎥 Packed boxes</div><div class="tab" data-t="p2">⌨️ Type an order</div></div>
+
+<div class="pane on" id="p1">
+<div class="cases" id="cases"></div>
+<div class="grid">
+<div><video id="vid" controls autoplay muted playsinline></video></div>
+<div>
+<div class="badge" id="badge"></div>
+<div class="why" id="why"></div>
+<table id="counts"></table>
+</div>
+</div>
+<div class="tl" id="tl"></div>
+<details><summary>Ledger events (what the camera saw, step by step)</summary><table id="events"></table></details>
+</div>
+
+<div class="pane" id="p2">
+<div class="row">
+<div><label>Order, as the customer wrote it</label><textarea id="otext">2 maggi, one parle g and a coke</textarea></div>
+<div><label>Packed box (camera clip)</label><select id="clip"></select></div>
+<div><button class="go" id="go">Verify box</button></div>
+</div>
+<div class="chips" id="chips"></div>
+<div class="grid" style="margin-top:8px">
+<div><label>Packing contract</label><span class="src" id="src"></span><pre id="contract"></pre>
+<p class="note" id="truth"></p></div>
+<div><div class="badge" id="badge2"></div><div class="why" id="why2"></div><table id="counts2"></table></div>
+</div>
+<p class="note">Example orders use contracts that <b>Muse Glimmer 30B</b> compiled on the GPU. Any other text uses a small
+keyword parser, because a static page cannot run a 30B model. The verifier logic is identical to <code>tally/agent.py</code>
+(checked on every example × clip pair when this page was built).</p>
+</div>
+</div>
+</div></section>
+
+<section id="how"><div class="wrap">
+<h2>How it works</h2>
+<p class="sub">Perception you can audit: models propose, plain code decides.</p>
+<div class="flow">
+<div class="fb m"><div class="k">MUSE GLIMMER 30B</div><h4>Order → contract</h4><p>“2 maggi and a coke” becomes validated SKU counts. Unknown items are asked about, never guessed.</p></div>
+<div class="fb"><div class="k">SAM 3.1</div><h4>Track every item</h4><p>Text-prompted video segmentation by category (“packet”, “soda can”), one stable ID per item.</p></div>
+<div class="fb"><div class="k">PLAIN CODE · 0 MODEL CALLS</div><h4>Ledger + verifier</h4><p>C1 order · C2 conservation · C3 continuity · C4 ID switch · C5 ambiguous identity.</p></div>
+<div class="fb m"><div class="k">MUSE GLIMMER 30B</div><h4>Investigator</h4><p>Sees the violation and crops of the items, then picks one repair or escalates to a human.</p></div>
+<div class="fb"><div class="k">VERIFIER GATE</div><h4>Keep only proven fixes</h4><p>A repair is accepted only if issues drop and no new ones appear. Otherwise a human signs off.</p></div>
+</div>
+<div class="rule">Glimmer can never clear a box. Only the verifier issues PASS or FAIL, and only on consistent evidence.</div>
+</div></section>
+
+<section id="results"><div class="wrap">
+<h2>Results</h2>
+<p class="sub">PackBench: 30 fixed-camera packing clips (clean, missing, extra, wrong item, occlusion, twins), each run as rendered and with an injected tracker ID switch.</p>
+<div class="panel" style="padding:6px 16px"><table id="res"></table></div>
+<p class="note">PackBench is synthetic: a real table, box and hand from a public Pexels clip, and public Open Food Facts product photos cut out with SAM 3.1, animated with exact ground truth. Real store footage is the next step.</p>
+</div></section>
+
+<footer><div class="wrap">Built by <b>Maram Yashwanth</b> · B V Raju Institute of Technology · Meta Global AI Developer Hackathon 2026 (Indie track)<br>
+<a href="https://github.com/yashwanth-maram/tally-pack">github.com/yashwanth-maram/tally-pack</a> · MIT licence</div></footer>
+
+<script>
+const COL={PASS:"var(--pass)",FAIL:"var(--fail)",NEEDS_REVIEW:"var(--rev)"};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const act=a=>{a=a||"";return a.slice(0,4).includes(": ")?a.split(": ").slice(1).join(": "):a};
+function badge(el,v){el.textContent=v.replace("_"," ");el.style.background=COL[v]||"#555"}
+function countsTable(el,order,counts){
+  const ks=[...new Set([...Object.keys(order),...Object.keys(counts)])].sort();
+  el.innerHTML="<tr><th>SKU</th><th>in box</th><th>ordered</th><th></th></tr>"+ks.map(k=>{
+    const g=counts[k]||0,w=order[k]||0,ok=g===w;
+    return `<tr><td>${esc(k)}</td><td>${g}</td><td>${w}</td><td class="${ok?"ok":"bad"}">${ok?"✓":"MISMATCH"}</td></tr>`}).join("");
+}
+// ---------------- verifier (mirror of identity.check_order + agent.audit verdict rule)
+function verify(order,clip){
+  if(clip.integrity.length) return {verdict:"NEEDS_REVIEW",details:clip.integrity};
+  const det=[];
+  [...new Set([...Object.keys(order),...Object.keys(clip.counts)])].sort().forEach(s=>{
+    const g=clip.counts[s]||0,w=order[s]||0;
+    if(g!==w) det.push(`${g<w?"missing":"extra"}: ${g} ${s} in box, order says ${w}`)});
+  return {verdict:det.length?"FAIL":"PASS",details:det};
+}
+// ---------------- keyword parser (mirror of contract.parse_rules)
+function parseRules(text,D){
+  const items={},unmatched=[],STOP=new Set(["pls","please","x","of","packet","pack","can","bottle","bottles","packets"]);
+  text.toLowerCase().split(/,|;|\+|&|\band\b|\n/).forEach(part=>{
+    const toks=part.match(/[a-z]+|\d+/g)||[];if(!toks.length)return;
+    const skus=Object.entries(D.aliases).filter(([s,keys])=>s in D.catalog&&toks.some(t=>keys.some(k=>t.startsWith(k)))).map(x=>x[0]);
+    const nums=toks.filter(t=>/^\d+$/.test(t)).map(Number).concat(toks.filter(t=>t in D.numbers).map(t=>D.numbers[t]));
+    const q=nums.length?nums[0]:1;
+    if(skus.length===1&&q<=20) items[skus[0]]=(items[skus[0]]||0)+q;
+    else if(toks.some(t=>!(t in D.numbers)&&!/^\d+$/.test(t)&&!STOP.has(t))) unmatched.push(part.trim());
+  });
+  return {order:items,unmatched,status:Object.keys(items).length&&!unmatched.length?"ok":(unmatched.length?"needs_input":"empty")};
+}
+fetch("demo/data.json").then(r=>r.json()).then(D=>{
+  // stats + results
+  const N=D.numbers_eval,n=N.normal,i=N.injected;
+  $("stats").innerHTML=[[`${n.caught}/${n.fail_n}`,"packing errors caught"],[`${n.false_clear+i.false_clear}/${n.fail_n+i.fail_n}`,"false clearances"],
+    [`${n.correct+i.correct}/${n.n+i.n}`,"correct verdicts (incl. injected ID switches)"],[`≈ ${Math.round(N.glimmer_s)} s`,"per Muse Glimmer decision"]]
+    .map(([a,b])=>`<div class="stat"><div class="n">${a}</div><div class="l">${b}</div></div>`).join("");
+  $("res").innerHTML=`<tr><th></th><th>Clean tracks</th><th>Injected ID switch</th></tr>
+   <tr><td>Packing errors caught</td><td>${n.caught} / ${n.fail_n}</td><td>${i.caught} / ${i.fail_n}</td></tr>
+   <tr><td><b>False clearances</b> (wrong box marked PASS)</td><td class="ok"><b>${n.false_clear} / ${n.fail_n}</b></td><td class="ok"><b>${i.false_clear} / ${i.fail_n}</b></td></tr>
+   <tr><td>Correct verdicts</td><td>${n.correct} / ${n.n}</td><td>${i.correct} / ${i.n}</td></tr>
+   <tr><td>Sent to a human instead of guessing</td><td>${n.human}</td><td>${i.human}</td></tr>`;
+  // tab 1
+  const NAMES={clean:"Clean box",missing:"Missing item",extra:"Extra item",wrong:"Look-alike substitute",twins:"Twin items",occlusion:"Hidden by a hand"};
+  const order=["pb_clean_0__injected","pb_missing_0__normal","pb_wrong_0__normal","pb_occlusion_4__normal","pb_extra_0__normal","pb_clean_0__normal","pb_twins_0__normal","pb_missing_0__injected"];
+  const S=D.stories.slice().sort((a,b)=>(order.indexOf(a.key)+99)%99-(order.indexOf(b.key)+99)%99);
+  $("cases").innerHTML=S.map((s,k)=>`<div class="case" data-k="${k}"><span class="dot" style="background:${COL[s.final]}"></span>${NAMES[s.scenario]||s.scenario}${s.kind==="injected"?" + ID switch":""}</div>`).join("");
+  function show(k){
+    const s=S[k];document.querySelectorAll(".case").forEach(e=>e.classList.toggle("on",+e.dataset.k===k));
+    $("vid").src=s.video;$("vid").play().catch(()=>{});badge($("badge"),s.final);
+    $("why").textContent=s.final==="PASS"?(s.trace.length?"Every ordered item is in the box, nothing extra. Reached after a verified repair.":"Every ordered item is in the box, nothing extra. Zero model calls.")
+      :s.final==="FAIL"?s.final_details.join("; "):"Evidence stays inconsistent, so Tally refuses to guess and asks a human to sign off.";
+    countsTable($("counts"),s.order,s.final_counts);
+    let h="";
+    if(s.first!=="NEEDS_REVIEW") h=`<div class="st v"><b>Verifier: consistent evidence on the first pass</b><i>No investigator needed, zero model calls.</i></div>`;
+    else{h=`<div class="st r"><b>Verifier: NEEDS REVIEW</b><i>${s.first_violations.slice(0,3).map(esc).join(" · ")}</i></div>`;
+      s.trace.forEach(t=>{
+        if(t.choice==="escalate") h+=`<div class="st g"><b>Muse Glimmer (${t.seconds}s): escalate to a human</b><i>${esc(t.reason)}</i></div>`;
+        else{h+=`<div class="st g"><b>Muse Glimmer (${t.seconds}s): ${esc(act(t.action))}</b><i>confidence ${t.confidence} · ${esc(t.reason)}</i></div>`;
+          const iv=t.integrity_violations||[0,0];h+=`<div class="st v"><b>Verifier gate: issues ${iv[0]} → ${iv[1]}, repair ${t.accepted?"ACCEPTED":"REJECTED"}</b></div>`}});}
+    h+=`<div class="st ${s.final==="PASS"?"p":s.final==="FAIL"?"f":"r"}"><b>Final: ${s.final.replace("_"," ")}</b><i>${s.stop.replace("_"," ")}</i></div>`;
+    $("tl").innerHTML=h;
+    $("events").innerHTML="<tr><th>t (s)</th><th>track</th><th>ID</th><th>event</th><th>zone</th></tr>"+s.events.map(e=>`<tr><td>${e.t}</td><td>${esc(e.item)}</td><td>${e.id}</td><td>${e.event}</td><td>${e.zone}</td></tr>`).join("");
+  }
+  document.querySelectorAll(".case").forEach(e=>e.onclick=()=>show(+e.dataset.k));show(0);
+  // tab 2
+  const clips=Object.keys(D.clips).sort((a,b)=>(a!=="pb_clean_0")-(b!=="pb_clean_0")||a.localeCompare(b));
+  $("clip").innerHTML=clips.map(c=>`<option value="${c}">${c} (${D.clips[c].scenario})</option>`).join("");
+  $("chips").innerHTML=Object.keys(D.contracts).map(t=>`<span class="chip">${esc(t)}</span>`).join("");
+  document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{$("otext").value=c.textContent;run()});
+  const norm=t=>t.toLowerCase().split(/\s+/).filter(Boolean).join(" ");
+  const saved={};Object.entries(D.contracts).forEach(([k,v])=>saved[norm(k)]=v);
+  function run(){
+    const text=$("otext").value,clip=D.clips[$("clip").value];let c,src;
+    if(saved[norm(text)]){c=saved[norm(text)];src=["g",`Muse Glimmer 30B · saved GPU output (${c.seconds} s)`]}
+    else{c=parseRules(text,D);src=["k","keyword parser (the 30B model needs a GPU)"]}
+    $("src").className="src "+src[0];$("src").textContent=src[1];
+    $("contract").textContent=JSON.stringify({order:c.order,unmatched:c.unmatched,status:c.status},null,2);
+    $("truth").textContent=`Ground truth for this clip (${clip.scenario}): the box really holds `+Object.entries(clip.in_box).map(([k,v])=>`${v} ${k}`).join(", ")+".";
+    if(c.status!=="ok"){badge($("badge2"),"NEEDS_REVIEW");$("why2").textContent="These lines did not map to the catalogue: "+c.unmatched.join(", ")+". Tally asks instead of guessing.";$("counts2").innerHTML="";return}
+    const r=verify(c.order,clip);badge($("badge2"),r.verdict);
+    $("why2").textContent=r.details.join("; ")||"Every ordered item is in the box, nothing extra.";
+    countsTable($("counts2"),c.order,clip.counts);
+  }
+  $("go").onclick=run;$("clip").onchange=run;run();
+});
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab,.pane").forEach(e=>e.classList.remove("on"));t.classList.add("on");$(t.dataset.t).classList.add("on")});
+</script>
+</body>
+</html>
