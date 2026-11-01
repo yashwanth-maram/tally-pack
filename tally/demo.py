@@ -21,7 +21,7 @@ from . import ledger as L
 SKU_BGR = {"maggi": (0, 215, 255), "parle_g": (0, 120, 255), "lays": (200, 80, 220),
            "coke_can": (40, 40, 230), "dettol": (80, 190, 60)}
 VERDICT_BGR = {"PASS": (60, 170, 30), "FAIL": (40, 40, 210), "NEEDS_REVIEW": (0, 150, 230)}
-PANEL_W = 400
+PANEL_W = 620
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 
@@ -126,23 +126,26 @@ def _verdict_lines(story):
     if story["first"] == "NEEDS_REVIEW":
         lines.append("Verifier: evidence inconsistent ->")
         for v0 in story["first_violations"][:2]:
-            lines += textwrap.wrap(f"  {v0}", 44)
+            lines += textwrap.wrap(f"  {v0}", 46)
         for t in story["trace"]:
             if t.get("choice") == "escalate":
-                lines += textwrap.wrap(f"Glimmer: escalate - {t.get('reason') or ''}", 44)[:3]
+                w = textwrap.wrap(f"Glimmer: escalate - {t.get('reason') or ''}", 46)
+                lines += w[:5] if len(w) <= 5 else w[:4] + [w[4][:42] + " ..."]
             else:
-                lines += textwrap.wrap(f"Glimmer: {_act(t)} (conf {t.get('confidence')})", 44)[:2]
+                lines += textwrap.wrap(f"Glimmer: {_act(t)} (conf {t.get('confidence')})", 46)[:2]
                 n_b, n_a = (t.get("integrity_violations") or [0, 0])
                 lines.append(f"Verifier re-check: {n_b} -> {n_a} issues, "
                              f"{'ACCEPTED' if t.get('accepted') else 'REJECTED'}")
     for d in story["final_details"][:3]:
-        lines += textwrap.wrap(d, 44)
+        lines += textwrap.wrap(d, 46)
     return head, lines
 
 
-def render(frames_dir, tracks, rep, story, masks, out_mp4, fps=10, hold_s=3.0):
+def render(frames_dir, tracks, rep, story, masks, out_mp4, fps=10, hold_s=6.0, S=1.5):
+    """Video (upscaled by S for readable text) + side panel: live order counts, ledger, then the verdict."""
     led, n = rep["ledger"], tracks["n_frames"]
     W, H = tracks["size"]
+    SW, SH, PW = int(W * S), int(H * S), PANEL_W
     zones = zone_series(led, L.Params().max_gap)
     asg = rep["assignment"]
     cid = led["container_id"]
@@ -150,22 +153,18 @@ def render(frames_dir, tracks, rep, story, masks, out_mp4, fps=10, hold_s=3.0):
     order = story["order"]
     skus = sorted(set(order) | set(story["final_counts"]))
     tmp = out_mp4 + ".raw.mp4"
-    vw = cv2.VideoWriter(tmp, cv2.VideoWriter_fourcc(*"mp4v"), fps, (W + PANEL_W, H))
+    vw = cv2.VideoWriter(tmp, cv2.VideoWriter_fourcc(*"mp4v"), fps, (SW + PW, SH))
     head, vlines = _verdict_lines(story)
     for f in list(range(n)) + [n - 1] * int(hold_s * fps):
         hold = f == n - 1
         img = cv2.imread(f"{frames_dir}/{f:05d}.jpg")
-        over = img.copy()
+        over, zone, labels = img.copy(), None, []
         for d in tracks["prompts"].get(A.CONTAINER, {}).get(f, []):
             if d["id"] == cid:
-                x, y, w, h = [int(v) for v in d["box"]]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 255), 2)
-                _text(img, "box", (x + 4, y + 18), 0.55)
-        labels = []
+                zone = [int(v * S) for v in d["box"]]
         for prompt in asg:
             for d in tracks["prompts"].get(prompt, {}).get(f, []):
-                a = asg[prompt].get(d["id"], {})
-                sku = a.get("sku", "?")
+                sku = asg[prompt].get(d["id"], {}).get("sku", "?")
                 col = SKU_BGR.get(sku, (160, 160, 160))
                 m = _match_mask(masks, prompt, f, d["box"])
                 x, y, w, h = [int(v) for v in d["box"]]
@@ -174,50 +173,60 @@ def render(frames_dir, tracks, rep, story, masks, out_mp4, fps=10, hold_s=3.0):
                     over[mm] = col
                     cnts, _ = cv2.findContours(mm.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                     cv2.drawContours(img, cnts, -1, col, 2)
+                    ys, xs = np.nonzero(mm)
+                    x, y = int(xs.min()), int(ys.min())
                 else:
                     cv2.rectangle(over, (x, y), (x + w, y + h), col, -1)
                     cv2.rectangle(img, (x, y), (x + w, y + h), col, 2)
-                labels.append((f"{sku if not sku.startswith('AMBIG') else '??'} #{d['id']}", (x, max(14, y - 6)), col))
-        img = cv2.addWeighted(over, 0.40, img, 0.60, 0)
-        for s, xy, col in labels:
-            _text(img, s, xy, 0.5, (0, 0, 0), 3)
-            _text(img, s, xy, 0.5, col, 1)
+                name = "??" if sku.startswith("AMBIG") else sku
+                labels.append((f"{name} #{d['id']}", (int(x * S), max(22, int(y * S) - 8)), col))
+        img = cv2.resize(cv2.addWeighted(over, 0.42, img, 0.58, 0), (SW, SH), interpolation=cv2.INTER_LINEAR)
+        if zone:
+            x, y, w, h = zone
+            x0, y0, x1, y1 = max(3, x), max(3, y), min(SW - 4, x + w), min(SH - 4, y + h)
+            cv2.rectangle(img, (x0, y0), (x1, y1), (255, 230, 120), 2)
+            _text(img, "PACKING ZONE", (x0 + 10, y0 + 30), 0.75, (0, 0, 0), 5)
+            _text(img, "PACKING ZONE", (x0 + 10, y0 + 30), 0.75, (255, 230, 120), 2)
+        for s_, xy, col in labels:
+            _text(img, s_, xy, 0.75, (0, 0, 0), 5)
+            _text(img, s_, xy, 0.75, col, 2)
 
         # ---- side panel
-        p = np.full((H, PANEL_W, 3), 28, np.uint8)
-        _text(p, "TALLY PACK", (16, 32), 0.8, (255, 255, 255), 2)
-        _text(p, f"t = {f / fps:4.1f}s   SAM 3.1 + ledger", (16, 56), 0.45, (170, 170, 170))
-        _text(p, "ORDER            in box / ordered", (16, 88), 0.5, (200, 200, 200))
+        p = np.full((SH, PW, 3), 26, np.uint8)
+        _text(p, "TALLY PACK", (22, 48), 1.25, (255, 255, 255), 3)
+        _text(p, f"t = {f / fps:4.1f}s    SAM 3.1 + ledger", (22, 82), 0.65, (170, 170, 170), 1)
+        _text(p, "ORDER", (22, 130), 0.75, (200, 200, 200), 2)
+        _text(p, "in box / ordered", (PW - 250, 130), 0.65, (170, 170, 170), 1)
         live = {}
         for (prompt, oid), z in zones.items():
             if z[f] == "container":
-                s = asg.get(prompt, {}).get(oid, {}).get("sku", "?")
-                live[s] = live.get(s, 0) + 1
-        y = 114
-        for s in skus:
-            got, want = (story["final_counts"].get(s, 0) if hold else live.get(s, 0)), order.get(s, 0)
-            col = (90, 210, 90) if got == want else ((235, 235, 235) if not hold else (70, 70, 235))
-            cv2.circle(p, (24, y - 5), 6, SKU_BGR.get(s, (160, 160, 160)), -1)
-            _text(p, f"{s:<10}", (38, y), 0.55, col)
-            _text(p, f"{got} / {want}", (250, y), 0.55, col)
-            y += 26
-        y += 8
-        _text(p, "LEDGER", (16, y), 0.5, (200, 200, 200))
-        y += 22
+                sk = asg.get(prompt, {}).get(oid, {}).get("sku", "?")
+                live[sk] = live.get(sk, 0) + 1
+        y = 170
+        for sk in skus:
+            got, want = (story["final_counts"].get(sk, 0) if hold else live.get(sk, 0)), order.get(sk, 0)
+            col = (90, 215, 90) if got == want else ((235, 235, 235) if not hold else (80, 80, 240))
+            cv2.circle(p, (32, y - 9), 10, SKU_BGR.get(sk, (160, 160, 160)), -1)
+            _text(p, sk, (54, y), 0.85, col, 2)
+            _text(p, f"{got} / {want}", (PW - 150, y), 0.85, col, 2)
+            y += 40
+        y += 14
         if not hold:
-            for e in [e for e in events if e["f"] <= f][-6:]:
-                s = asg.get(e["item"], {}).get(e["id"], {}).get("sku", e["item"])
-                _text(p, f"{e['t']:4.1f}s  {s} #{e['id']}  {e['event']}", (16, y), 0.45)
-                y += 20
+            _text(p, "LEDGER", (22, y), 0.75, (200, 200, 200), 2)
+            y += 36
+            for e in [e for e in events if e["f"] <= f][-8:]:
+                sk = asg.get(e["item"], {}).get(e["id"], {}).get("sku", e["item"])
+                _text(p, f"{e['t']:4.1f}s  {sk} #{e['id']}  {e['event']}", (22, y), 0.62, (230, 230, 230), 1)
+                y += 30
         else:
             col = VERDICT_BGR[story["final"]]
-            cv2.rectangle(p, (10, y - 6), (PANEL_W - 10, y + 34), col, -1)
-            _text(p, head, (18, y + 20), 0.52, (255, 255, 255), 2)
-            y += 56
-            for ln in vlines[: (H - y - 10) // 19]:
-                _text(p, ln, (16, y), 0.42)
-                y += 19
-            cv2.rectangle(img, (0, 0), (W - 1, H - 1), col, 8)
+            cv2.rectangle(p, (14, y - 10), (PW - 14, y + 50), col, -1)
+            _text(p, head, (26, y + 30), 0.72, (255, 255, 255), 2)
+            y += 86
+            for ln in vlines[: max(0, (SH - y - 10) // 28)]:
+                _text(p, ln, (22, y), 0.6, (235, 235, 235), 1)
+                y += 28
+            cv2.rectangle(img, (0, 0), (SW - 1, SH - 1), col, 12)
         vw.write(np.hstack([img, p]))
     vw.release()
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", tmp, "-c:v", "libx264", "-preset", "veryfast",
