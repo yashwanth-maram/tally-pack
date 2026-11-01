@@ -6,8 +6,7 @@ validated deterministically (SKU must exist, quantity must be a sane integer); a
 fails validation is returned as `unmatched` so the packer is asked instead of guessed.
 """
 import json
-
-from . import llm
+import re
 
 CATALOG = {
     "maggi": {"name": "Maggi 2-Minute Masala Noodles (packet)", "category": "packet"},
@@ -45,11 +44,39 @@ def validate(parsed, catalog, max_qty=20):
 
 def compile_order(order_text, catalog=CATALOG):
     """Returns the contract: order counts, SAM prompts per category, and any unmatched lines."""
+    from . import llm  # lazy: the verifier and the CPU demo never need torch
     parsed, raw, secs = llm.ask_json(SYSTEM, _prompt(order_text, catalog))
-    items, unmatched = validate(parsed, catalog)
+    return _contract(order_text, *validate(parsed, catalog), catalog, llm.MODEL_ID, secs)
+
+
+def _contract(order_text, items, unmatched, catalog, model, secs):
     cats = {}
     for sku in items:
         cats.setdefault(CATEGORY_PROMPTS[catalog[sku]["category"]], []).append(sku)
     return {"order_text": order_text, "order": items, "category_prompts": cats, "unmatched": unmatched,
             "status": "ok" if items and not unmatched else ("needs_input" if unmatched else "empty"),
-            "model": llm.MODEL_ID, "seconds": secs}
+            "model": model, "seconds": secs}
+
+
+# ------------------------------------------------------------------ keyword fallback (no model)
+ALIASES = {"maggi": ("maggi", "noodle"), "parle_g": ("parle", "biscuit"), "lays": ("lay", "chip", "crisp"),
+           "coke_can": ("coke", "coca", "cola", "soda"), "dettol": ("dettol", "sanitiz", "sanitis", "handwash")}
+NUMBER_WORDS = {"a": 1, "an": 1, "one": 1, "single": 1, "two": 2, "pair": 2, "couple": 2, "three": 3,
+                "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+
+def parse_rules(order_text, catalog=CATALOG):
+    """Deterministic keyword parser, used where the 30B model cannot run (e.g. a free CPU demo).
+    Each comma / 'and' / '+' separated part must name exactly one catalogue product."""
+    items, unmatched = {}, []
+    for part in re.split(r",|;|\+|&|\band\b|\n", order_text.lower()):
+        toks = re.findall(r"[a-z]+|\d+", part)
+        if not toks:
+            continue
+        skus = [s for s, keys in ALIASES.items() if s in catalog and any(t.startswith(k) for t in toks for k in keys)]
+        nums = [int(t) for t in toks if t.isdigit()] + [NUMBER_WORDS[t] for t in toks if t in NUMBER_WORDS]
+        if len(skus) == 1 and (nums[0] if nums else 1) <= 20:
+            items[skus[0]] = items.get(skus[0], 0) + (nums[0] if nums else 1)
+        elif any(t not in NUMBER_WORDS and not t.isdigit() and t not in ("pls", "please", "x", "of", "packet", "pack", "can", "bottle", "bottles", "packets") for t in toks):
+            unmatched.append(part.strip())
+    return _contract(order_text, items, unmatched, catalog, "keyword parser", 0.0)

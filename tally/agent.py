@@ -34,12 +34,13 @@ SYSTEM = ("You are the investigator for a warehouse packing verifier. A determin
 
 
 # ------------------------------------------------------------------ audit (no model calls)
-def audit(tracks, order, cat_skus, frames_dir, refs, identity_overrides=None, params=None):
-    """Ledger + identity + checks. Returns a dict with verdict PASS | FAIL | NEEDS_REVIEW."""
+def audit(tracks, order, cat_skus, frames_dir, refs, identity_overrides=None, params=None, assignment=None):
+    """Ledger + identity + checks. Returns a dict with verdict PASS | FAIL | NEEDS_REVIEW.
+    `assignment` (precomputed I.assign output) skips reading frames, e.g. in the CPU demo."""
     cat_skus = {p: s for p, s in cat_skus.items() if p in tracks["prompts"]}
     led = L.build_ledger(tracks, CONTAINER, list(cat_skus), params)
     integrity = L.verify(led, {}, params)
-    assignment = I.assign(frames_dir, tracks, cat_skus, refs)
+    assignment = I.assign(frames_dir, tracks, cat_skus, refs) if assignment is None else copy.deepcopy(assignment)
     for (prompt, oid), sku in (identity_overrides or {}).items():
         if oid in assignment.get(prompt, {}):
             assignment[prompt][oid] = {"sku": sku, "score": 1.0, "runner_up": 0.0, "margin": 1.0, "override": True}

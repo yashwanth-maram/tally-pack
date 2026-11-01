@@ -1,8 +1,17 @@
+# core (verifier, demo app)
 numpy>=2.1,<2.3
 opencv-python
+Pillow
+gradio
+# SAM 3.1 tracking: git clone https://github.com/facebookresearch/sam3 and add it to sys.path (do not pip install -e)
 timm>=1.0.17
 ftfy==6.1.1
 regex
 iopath
 huggingface_hub
-# SAM 3.1: git clone https://github.com/facebookresearch/sam3 (add to sys.path, do not pip install -e)
+# Muse Glimmer 30B (4-bit)
+torch
+transformers
+accelerate
+bitsandbytes
+# submission video narration runs in its own virtualenv: kokoro==0.9.4 misaki==0.9.4 (see tally/tts.py)

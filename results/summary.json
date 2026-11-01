@@ -1,0 +1,19 @@
+{
+ "normal": {
+  "n": 30,
+  "correct": 29,
+  "fail_n": 15,
+  "caught": 15,
+  "false_clear": 0,
+  "human": 1
+ },
+ "injected": {
+  "n": 30,
+  "correct": 29,
+  "fail_n": 15,
+  "caught": 15,
+  "false_clear": 0,
+  "human": 1
+ },
+ "glimmer_s": 8.828125
+}

@@ -1,0 +1,1195 @@
+[
+ {
+  "name": "pb_clean_0",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_clean_0",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 11.3,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The can\u2019s appearance, orientation and position are consistent across id0 f0, id0 f9, id0 f18 and id900 f19/f60/f99, indicating a single physical Coca-Cola can that was mis-identified as id900 after id0 vanished at f18, so merging ID 900 into ID 0 resolves the conservation and identity violations.",
+    "seconds": 11.3,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_clean_1",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_clean_1",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.6,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The can\u2019s appearance, orientation and position are consistent across the frames, with a hand entering at f18 and the ID changing to 900 at f19, indicating a tracker ID switch rather than a new item.",
+    "seconds": 7.6,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_clean_2",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_clean_2",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.8,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The bottle\u2019s appearance, green cap, label and position are consistent across id0 f0/f9/f18 and id900 f19/f59/f99, indicating a single physical item with an ID switch at f19.",
+    "seconds": 7.8,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_clean_3",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_clean_3",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The Parle-G packet crop is visually identical across the first, middle and last frames, and the hand interaction at f20 coincides with the reported ID switch, indicating ID 900 is the same physical item as ID 0.",
+    "seconds": 7.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_clean_4",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_clean_4",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 10.1,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The yellow noodle packet in id0 f0, id0 f9, id0 f18 and id900 f19, id900 f59, id900 f99 is the same physical item with consistent appearance and position, indicating ID 900 is a continuation of ID 0 after a tracker ID switch at f19.",
+    "seconds": 10.1,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_missing_0",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_missing_0",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 9.8,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The bottle in id0 f0/f10 and id900 f21/f48/f74 is the same Dettol hand sanitizer with green cap and label, indicating a tracker ID switch rather than a new item, so merging ID 900 into ID 0 resolves the missing lays count and conservation violation.",
+    "seconds": 9.8,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_missing_1",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_missing_1",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.5,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.92,
+    "reason": "The crops show the same Coca-Cola can with consistent appearance and pose across id0 and id900, indicating a tracker ID switch at f21 rather than a new item, which explains the conservation and identity violations.",
+    "seconds": 7.5,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_missing_2",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_missing_2",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.8,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The bottle\u2019s appearance, label, cap and position are consistent across id0 and id900 crops, indicating a single physical item with an ID switch at f19, so merging ID 900 into ID 0 resolves the missing maggi, conservation and identity violations.",
+    "seconds": 8.8,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_missing_3",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_missing_3",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.1,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The six crops show the same Lay\u2019s chip bag with consistent appearance and position across frames, matching the disappearance of id1 at f18 and immediate appearance of id901 at f19, indicating a tracker ID switch rather than a new item.",
+    "seconds": 8.1,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_missing_4",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_missing_4",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 9.7,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The can\u2019s appearance, orientation and position are consistent across id0 f0/f10/f20 and id900 f21/f62/f99, indicating a single physical can with an ID switch at f21, so merging ID 900 into ID 0 resolves the missing lay-in-box and conservation violations.",
+    "seconds": 9.7,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_extra_0",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_extra_0",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.3,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The Parle-G packet is the same physical item across frames with a hand occluding it, and the ledger shows ID 2 vanishing at f19 and ID 902 appearing immediately after, indicating a tracker ID switch rather than an extra item.",
+    "seconds": 8.3,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_extra_1",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_extra_1",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 11.6,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The bottle in id0 f0, id0 f10, id0 f19 and id900 f20, f85, f149 is visually identical (green cap, Dettol label, shape), and the ledger shows id0 vanishing at 1.9s and id900 appearing at 2.0s, consistent with a tracker ID switch rather than a new item.",
+    "seconds": 11.6,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_extra_2",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_extra_2",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.6,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The six crops show the same yellow Maggi packet with identical packaging and pose progression, and the ledger shows ID 0 vanishing at f18 and ID 900 appearing at f19 with a hand interaction, consistent with a tracker ID switch rather than a new item.",
+    "seconds": 8.6,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_extra_3",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_extra_3",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 9.6,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The crops show the same Lay\u2019s bag across frames with a hand occluding it at f19\u2013f20, and the ledger shows ID 1 vanishing at 1.9s and ID 901 appearing at 2.0s, consistent with a tracker ID switch rather than a new item.",
+    "seconds": 9.6,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_extra_4",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_extra_4",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 10.3,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The can\u2019s appearance, pose and position are consistent across the crops labeled id0 f10, id0 f20, id900 f21, id900 f71, id900 f124, indicating the same physical Coca-Cola can was tracked as id0 then as id900 after frame 21, matching the suspected ID switch.",
+    "seconds": 10.3,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_wrong_0",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_wrong_0",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 6.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The Parle-G packet crop is visually identical across the sequence and the ID switch at f19 coincides with a hand occlusion, supporting merging ID 902 into the original ID 2.",
+    "seconds": 6.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_wrong_1",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_wrong_1",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 9.4,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The six crops show the same Lay\u2019s bag across frames with consistent appearance and position, matching the ledger\u2019s ID 2 \u2192 ID 902 switch at f21, so merging ID 902 into ID 2 resolves the extra parle_g, missing coke_can, and conservation/identity violations.",
+    "seconds": 9.4,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_wrong_2",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_wrong_2",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 12.0,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The six crops show the same green-capped Dettol bottle across id0 f0, id0 f13, id0 f118, id900 f18, id900 f61, id900 f99 with consistent appearance and pose, supporting that ID 900 is a continuation of ID 0 after the suspected switch at f19, so merging resolves the extra/missing counts and conservation violation.",
+    "seconds": 12.0,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_wrong_3",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_wrong_3",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.7,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The yellow Maggi packet in the crops is visually identical across the sequence and the ID switch at f19 coincides with the hand occlusion, indicating ID 900 is the same physical item as ID 0, so merging resolves the extra/missing counts and conservation violation.",
+    "seconds": 8.7,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_wrong_4",
+  "kind": "normal",
+  "expected": "FAIL",
+  "first": "FAIL",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_wrong_4",
+  "kind": "injected",
+  "expected": "FAIL",
+  "first": "NEEDS_REVIEW",
+  "final": "FAIL",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The Parle-G packet in the crops is visually identical across id2 and id902 frames, and the ledger shows id2 vanishing at 1.9s immediately before id902 appears at 2.0s, consistent with an ID switch rather than a new item.",
+    "seconds": 8.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_0",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_occlusion_0",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 6.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The can\u2019s appearance, pose and position are consistent across the crops, indicating ID 900 is the same physical Coca-Cola can as ID 0 after a tracker ID switch at f20.",
+    "seconds": 6.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_1",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_occlusion_1",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 11.5,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The bottle\u2019s appearance, green cap and label are visually consistent across id0 f10, id0 f19, id900 f20, id900 f60 and id900 f99, indicating the same physical hand sanitizer bottle was tracked as id0 then id900 after the disappearance at f19, so merging ID 900 into ID 0 resolves the conservation and identity violations.",
+    "seconds": 11.5,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_2",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_occlusion_2",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.7,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 901 into ID 1 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The Parle-G packet crop is visually identical across id1 and id901 frames, and the timeline shows id1 vanishing at 1.9s immediately before id901 appears at 2.0s, consistent with an ID switch rather than a new item.",
+    "seconds": 8.7,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_3",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_occlusion_3",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.4,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The yellow noodle packet is visually identical across the sequence and the ID switch at f19 coincides with a hand occlusion, indicating the same physical item was mislabeled as id900 after id0 vanished.",
+    "seconds": 7.4,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_4",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "NEEDS_REVIEW",
+  "stop": "awaiting_signoff",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.3,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: drop ID 0 detections f70-f72 (tracker briefly latched onto another object)",
+     "1: drop ID 0 detections f73-f75 (tracker briefly latched onto another object)"
+    ],
+    "choice": "escalate",
+    "reason": "The three crops show the same Lay\u2019s chip bag with consistent appearance and pose, so the visual evidence does not support a brief latch onto a different object; the large jumps likely stem from tracking/ID issues not resolved by the proposed drops.",
+    "seconds": 8.3
+   }
+  ]
+ },
+ {
+  "name": "pb_occlusion_4",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "NEEDS_REVIEW",
+  "stop": "awaiting_signoff",
+  "glimmer_calls": 2,
+  "glimmer_s": 17.200000000000003,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+     "1: drop ID 0 detections f70-f72 (tracker briefly latched onto another object)",
+     "2: drop ID 0 detections f73-f75 (tracker briefly latched onto another object)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The crops show the same green-capped Dettol bottle persisting across the sequence with a hand entering the frame, and the ledger shows ID 0 vanishing and ID 900 appearing at nearly the same time, consistent with a tracker ID switch rather than spurious detections.",
+    "seconds": 8.8,
+    "accepted": true,
+    "integrity_violations": [
+     5,
+     3
+    ]
+   },
+   {
+    "step": 1,
+    "candidates": [
+     "0: drop ID 0 detections f70-f72 (tracker briefly latched onto another object)",
+     "1: drop ID 0 detections f73-f75 (tracker briefly latched onto another object)"
+    ],
+    "choice": "escalate",
+    "reason": "The three crops show the same Lay\u2019s chip bag with consistent appearance and pose, so the visual evidence does not support a brief latch onto a different object; the large jumps likely stem from tracking/ID issues not resolved by the proposed drops.",
+    "seconds": 8.4
+   }
+  ]
+ },
+ {
+  "name": "pb_twins_0",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_twins_0",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 6.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.86,
+    "reason": "The crops show the same Lay\u2019s bag across id0 and id900 with consistent appearance and position, supporting a tracker ID switch rather than a new item, matching the C4 identity violation.",
+    "seconds": 6.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_twins_1",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_twins_1",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 9.2,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The crops show the same Lay\u2019s chip bag with consistent branding, color, and orientation across the sequence, and the ledger shows id2 vanishing at 2.0s immediately before id902 appears at 2.1s, indicating a tracker ID switch rather than a new item.",
+    "seconds": 9.2,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_twins_2",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_twins_2",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 8.9,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.92,
+    "reason": "The bottle appearance, green cap and label are consistent across the ID 0 crops and the ID 900 crops, and the hand interaction at f18 bridges the disappearance of ID 0 and appearance of ID 900, indicating a tracker ID switch rather than a new item.",
+    "seconds": 8.9,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_twins_3",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_twins_3",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.1,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 900 into ID 0 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The yellow Maggi noodle packet is visually identical across the frames and the hand interaction at f18 coincides with the ID switch, indicating ID 900 is the same physical item as ID 0.",
+    "seconds": 7.1,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pb_twins_4",
+  "kind": "normal",
+  "expected": "PASS",
+  "first": "PASS",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 0,
+  "glimmer_s": 0,
+  "trace": []
+ },
+ {
+  "name": "pb_twins_4",
+  "kind": "injected",
+  "expected": "PASS",
+  "first": "NEEDS_REVIEW",
+  "final": "PASS",
+  "stop": "answered",
+  "glimmer_calls": 1,
+  "glimmer_s": 7.5,
+  "trace": [
+   {
+    "step": 0,
+    "candidates": [
+     "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)"
+    ],
+    "choice": 0,
+    "action": "0: merge ID 902 into ID 2 (same physical item, tracker switched IDs)",
+    "confidence": 0.96,
+    "reason": "The Parle-G packet crop is visually identical across the sequence and the ID 902 appearance at f20 immediately follows ID 2\u2019s disappearance at f19, indicating a tracker ID switch rather than a new item.",
+    "seconds": 7.5,
+    "accepted": true,
+    "integrity_violations": [
+     2,
+     0
+    ]
+   }
+  ]
+ }
+]
