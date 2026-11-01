@@ -124,9 +124,64 @@ def score_clip_v2(tracks, gt, frames_dir, refs, container_tracks=None, oracle_id
     order = {s: gt["order"].get(s, 0) for s in gt["categories"]}
     violations = I.check_order(counts, ambiguous, order) + integrity["violations"]
     checks = {v["check"] for v in violations}
-    pred = "FAIL" if "C1_order" in checks else ("NEEDS_REVIEW" if checks else "PASS")
+    # a verdict is only issued on consistent evidence: any integrity issue (C2-C5) -> NEEDS_REVIEW
+    if checks - {"C1_order"}:
+        pred = "NEEDS_REVIEW"
+    else:
+        pred = "FAIL" if "C1_order" in checks else "PASS"
     truth = gt["in_box"]
     count_ok = all(counts.get(s, 0) == truth.get(s, 0) for s in set(truth) | set(counts)) and not ambiguous
     return {"name": gt["name"], "scenario": gt["scenario"], "expected": gt["expected"], "pred": pred,
             "count_exact": count_ok, "counts": counts, "truth": truth, "ambiguous": len(ambiguous),
             "violations": [f"{v['check']}:{v['detail']}" for v in violations], "model_calls": 0}
+
+
+# ---------------------------------------------------------------- fault injection + verified self-repair
+import copy  # noqa: E402
+
+
+def inject_id_switch(tracks, prompt, oid, at_frame, new_id=None):
+    """Simulate a tracker ID switch: from `at_frame` on, object `oid` is reported under a new ID."""
+    t = copy.deepcopy(tracks)
+    new_id = new_id if new_id is not None else 900 + int(oid)
+    for f, dets in t["prompts"][prompt].items():
+        if int(f) >= at_frame:
+            for d in dets:
+                if d["id"] == oid:
+                    d["id"] = new_id
+    return t, new_id
+
+
+def propose_repairs(tracks, gt, params=None):
+    """Deterministic repair proposals from C4 violations: merge the new ID back into the vanished one."""
+    cats = category_skus(gt)
+    led = L.build_ledger(tracks, CONTAINER, list(cats), params)
+    rep = L.verify(led, {}, params)
+    props = []
+    for v in rep["violations"]:
+        if v["check"] == "C4_identity" and len(v["ids"]) == 2:
+            props.append({"type": "merge", "item": v["item"], "keep": v["ids"][1], "drop": v["ids"][0],
+                          "why": v["detail"]})
+    return props
+
+
+def self_repair(tracks, gt, frames_dir, refs, max_steps=3, params=None):
+    """Apply proposals one at a time through the verifier gate (L.try_repair). Returns (tracks, trace)."""
+    cats = category_skus(gt)
+    trace = []
+    for _ in range(max_steps):
+        props = propose_repairs(tracks, gt, params)
+        if not props:
+            break
+        applied = False
+        for a in props:
+            r = L.try_repair(tracks, CONTAINER, list(cats), {}, a, params)
+            trace.append({"action": a, "accepted": r["accepted"],
+                          "violations_before": len(r["before"]["violations"]),
+                          "violations_after": len(r["after"]["violations"])})
+            if r["accepted"]:
+                tracks, applied = r["tracks"], True
+                break
+        if not applied:
+            break
+    return tracks, trace
