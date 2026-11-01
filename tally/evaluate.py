@@ -74,3 +74,59 @@ def run(frames_root, gts, tracks_dir, prompts_for=None, track_fn=None, load_fn=N
             save_fn(tracks, path)
         results.append(score_clip(tracks, gt))
     return results, summarize(results)
+
+
+# ---------------------------------------------------------------- v2: category tracking + SKU identity
+from . import identity as I  # noqa: E402
+
+CATEGORY_PROMPTS = {"packet": "packet", "can": "can", "bottle": "bottle"}
+
+
+def category_skus(gt, cat_prompts=None):
+    cat_prompts = cat_prompts or CATEGORY_PROMPTS
+    out = {}
+    for sku, cat in gt["categories"].items():
+        out.setdefault(cat_prompts[cat], []).append(sku)
+    return out
+
+
+def oracle_tracks(gt, cat_prompts=None):
+    """Perfect perception built from the generator's ground truth (items under a covering hand are unseen)."""
+    cat_prompts = cat_prompts or CATEGORY_PROMPTS
+    prompts = {p: {} for p in set(cat_prompts[c] for c in gt["categories"].values())}
+    for f, boxes in enumerate(gt["truth"]):
+        for p in prompts:
+            prompts[p][f] = []
+        for b in boxes:
+            if b["covered"]:
+                continue
+            p = cat_prompts[gt["categories"][b["sku"]]]
+            prompts[p][f].append({"id": b["idx"], "p": 1.0, "box": b["box"], "c": b["c"],
+                                  "area": b["box"][2] * b["box"][3]})
+    return {"n_frames": gt["n_frames"], "fps": gt["fps"], "size": gt["size"], "prompts": prompts}
+
+
+def score_clip_v2(tracks, gt, frames_dir, refs, container_tracks=None, oracle_identity=False, params=None):
+    cats = category_skus(gt)
+    t = dict(tracks)
+    t["prompts"] = dict(tracks["prompts"])
+    if container_tracks is not None:
+        t["prompts"][CONTAINER] = container_tracks
+    led = L.build_ledger(t, CONTAINER, list(cats), params)
+    integrity = L.verify(led, {}, params)                       # C2-C4 per category
+    if oracle_identity:
+        idx_sku = {b["idx"]: b["sku"] for b in gt["truth"][0]}
+        assignment = {p: {oid: {"sku": idx_sku[oid], "score": 1.0, "runner_up": 0.0, "margin": 1.0}
+                          for oid in led["items"][p]} for p in cats}
+    else:
+        assignment = I.assign(frames_dir, t, cats, refs)
+    counts, ambiguous = I.sku_counts(led, assignment)
+    order = {s: gt["order"].get(s, 0) for s in gt["categories"]}
+    violations = I.check_order(counts, ambiguous, order) + integrity["violations"]
+    checks = {v["check"] for v in violations}
+    pred = "FAIL" if "C1_order" in checks else ("NEEDS_REVIEW" if checks else "PASS")
+    truth = gt["in_box"]
+    count_ok = all(counts.get(s, 0) == truth.get(s, 0) for s in set(truth) | set(counts)) and not ambiguous
+    return {"name": gt["name"], "scenario": gt["scenario"], "expected": gt["expected"], "pred": pred,
+            "count_exact": count_ok, "counts": counts, "truth": truth, "ambiguous": len(ambiguous),
+            "violations": [f"{v['check']}:{v['detail']}" for v in violations], "model_calls": 0}

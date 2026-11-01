@@ -27,6 +27,8 @@ SKUS = {
     "coke_can": "soda can",
     "dettol": "plastic bottle",
 }
+# SKU -> product category: SAM 3.1 tracks categories reliably; brand identity is resolved by appearance
+CATEGORY = {"maggi": "packet", "parle_g": "packet", "lays": "packet", "coke_can": "can", "dettol": "bottle"}
 SCENARIOS = ["clean", "missing", "extra", "wrong", "occlusion", "twins"]
 
 
@@ -134,10 +136,17 @@ def make_clip(out_dir, scenario, seed, assets, interior, table_zone, fps=10, pic
     occl_pick = rng.randrange(len(to_pack)) if scenario == "occlusion" else -1
     hw, hh = hand.shape[1], hand.shape[0]
     home = (W + hw * 0.3, H + hh * 0.2)       # hand rests off-frame, bottom-right
-    frames, events = [], []
+    frames, events, truth = [], [], []
 
     def render(carried=None, hand_at=None, cover=False):
         fr = bg.copy()
+        boxes = []
+        for j, it in enumerate(items):
+            sh, sw = sprites[it["sku"]].shape[:2]
+            boxes.append({"idx": j, "sku": it["sku"], "c": [round(it["pos"][0], 1), round(it["pos"][1], 1)],
+                          "box": [round(it["pos"][0] - sw / 2, 1), round(it["pos"][1] - sh / 2, 1), sw, sh],
+                          "covered": bool(cover and j == carried)})
+        truth.append(boxes)
         for j, it in enumerate(items):
             if j != carried:
                 paste(fr, sprites[it["sku"]], *it["pos"])
@@ -191,7 +200,8 @@ def make_clip(out_dir, scenario, seed, assets, interior, table_zone, fps=10, pic
             kinds.append(f"extra:{s}")
     gt = {"scenario": scenario, "seed": seed, "order": order, "in_box": in_box,
           "expected": "PASS" if not kinds else "FAIL", "errors": sorted(kinds), "note": note,
-          "n_frames": len(frames), "fps": fps, "size": [W, H], "events": events,
+          "n_frames": len(frames), "fps": fps, "size": [W, H], "events": events, "truth": truth,
+          "categories": {s: CATEGORY[s] for s in {it["sku"] for it in items}},
           "prompts": {s: SKUS[s] for s in set(order) | set(in_box) | {it["sku"] for it in items}}}
     json.dump(gt, open(os.path.join(out_dir, "gt.json"), "w"), indent=1)
     return gt
