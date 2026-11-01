@@ -63,15 +63,25 @@ def dequantize_vision(model):
     return restored
 
 
-def chat(messages, max_new_tokens=1536):
-    """messages: [{"role": ..., "content": [{"type": "text", "text": ...} | {"type": "image", "image": PIL}]}]"""
+FAST_PREFIX = " to=user<|message|>"   # Glimmer's final-answer header; prefilling it skips the reasoning channel
+
+
+def chat(messages, max_new_tokens=1536, fast=False):
+    """messages: [{"role": ..., "content": [{"type": "text", "text": ...} | {"type": "image", "image": PIL}]}]
+
+    fast=True prefills the final-answer header so Glimmer answers directly (seconds instead of minutes).
+    """
     st = load()
     proc, model = st["proc"], st["model"]
-    inputs = proc.apply_chat_template(messages, add_generation_prompt=True, tokenize=True,
-                                      return_dict=True, return_tensors="pt").to(model.device)
+    text = proc.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+    if fast:
+        text += FAST_PREFIX
+    images = [c["image"] for m in messages for c in m["content"] if c.get("type") == "image"]
+    inputs = proc(text=text, images=images or None, return_tensors="pt").to(model.device)
     with torch.inference_mode():
         out = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
-    return proc.decode(out[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True)
+    reply = proc.decode(out[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True)
+    return ("to=user" + reply) if fast else reply
 
 
 def extract_json(text):
@@ -99,11 +109,13 @@ def extract_json(text):
     return None
 
 
-def ask_json(system, user_text, images=(), max_new_tokens=1536):
-    """One-shot JSON question. Returns (parsed_json_or_None, raw_text, seconds)."""
+def ask_json(system, user_text, images=(), max_new_tokens=None, fast=True):
+    """One-shot JSON question. Returns (parsed_json_or_None, raw_text, seconds).
+    fast=True (default): direct answer, ~200 tokens budget. fast=False: full reasoning, 1536 tokens."""
+    max_new_tokens = max_new_tokens or (256 if fast else 1536)
     content = [{"type": "image", "image": im} for im in images] + [{"type": "text", "text": user_text}]
     messages = [{"role": "system", "content": [{"type": "text", "text": system}]},
                 {"role": "user", "content": content}]
     t0 = time.time()
-    raw = chat(messages, max_new_tokens)
+    raw = chat(messages, max_new_tokens, fast=fast)
     return extract_json(raw), raw, round(time.time() - t0, 1)

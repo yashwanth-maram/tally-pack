@@ -45,7 +45,7 @@ def validate(parsed, catalog, max_qty=20):
 
 def compile_order(order_text, catalog=CATALOG):
     """Returns the contract: order counts, SAM prompts per category, and any unmatched lines."""
-    parsed, raw, secs = llm.ask_json(SYSTEM, _prompt(order_text, catalog), max_new_tokens=2048)
+    parsed, raw, secs = llm.ask_json(SYSTEM, _prompt(order_text, catalog))
     items, unmatched = validate(parsed, catalog)
     cats = {}
     for sku in items:
