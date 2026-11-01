@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:Inter,"Inter Display",sans-serif;color:#e6edf3;padding:20px}
+.card{border-radius:28px;overflow:hidden;position:relative;margin-bottom:40px;
+  background:radial-gradient(1200px 500px at 85% -10%,rgba(249,115,22,.22),transparent 60%),
+             radial-gradient(900px 500px at -10% 120%,rgba(47,129,247,.18),transparent 60%),#0b0f16;
+  border:1px solid #232a36}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(180deg,#000,transparent 85%)}
+/* ---------------- banner */
+#banner{width:1600px;height:560px}
+#banner .l{position:absolute;left:70px;top:70px;width:690px}
+.kick{font-size:15px;letter-spacing:2.5px;font-weight:700;color:#f97316}
+#banner h1{font-family:"Inter Display",Inter;font-size:104px;font-weight:800;letter-spacing:-3px;line-height:1;margin:18px 0 14px}
+#banner h1 span{background:linear-gradient(90deg,#fff,#fdba74);-webkit-background-clip:text;color:transparent}
+.tagline{font-size:29px;font-weight:600;line-height:1.3;color:#f3f4f6}
+.tagline b{color:#fb923c}
+.desc{margin-top:16px;font-size:18.5px;line-height:1.55;color:#9aa4b2}
+.chips{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.chip{font-size:15px;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid #2b3445;background:rgba(22,27,34,.8);display:flex;gap:8px;align-items:center}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+#banner .r{position:absolute;right:-60px;top:70px;width:880px;transform:perspective(1600px) rotateY(-14deg) rotateX(4deg);transform-origin:left center}
+#banner .r img{width:100%;border-radius:18px;border:1px solid #3a4250;box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 6px rgba(255,255,255,.03)}
+.pill{position:absolute;padding:12px 20px;border-radius:14px;font-weight:800;font-size:22px;color:#fff;box-shadow:0 18px 40px rgba(0,0,0,.45);letter-spacing:.5px}
+#p1{left:770px;top:345px;background:#16a34a}
+#p2{left:830px;top:120px;background:#d97706;font-size:16px;padding:10px 14px}
+#p1 small,#p2 small{display:block;font-size:12.5px;font-weight:600;opacity:.9;letter-spacing:0}
+/* ---------------- architecture */
+#arch{width:1600px;height:850px}
+#arch h2,#score h2,#verd h2{position:absolute;left:60px;top:44px;font-size:34px;font-weight:800;letter-spacing:-.5px}
+#arch .sub,#score .sub,#verd .sub{position:absolute;left:60px;top:92px;font-size:17px;color:#9aa4b2}
+.n{position:absolute;border-radius:18px;padding:18px 20px;background:#141a24;border:1.5px solid #2d3646}
+.n .t{font-size:12.5px;font-weight:800;letter-spacing:1.6px;margin-bottom:6px}
+.n .h{font-size:21px;font-weight:700;color:#f3f4f6;line-height:1.2}
+.n .p{font-size:14.5px;color:#9aa4b2;margin-top:6px;line-height:1.4}
+.n.g{border-color:#9a3412;background:linear-gradient(180deg,#24160c,#170f09)} .n.g .t{color:#fb923c}
+.n.s{border-color:#1d4ed8;background:linear-gradient(180deg,#0f1a33,#0c1324)} .n.s .t{color:#60a5fa}
+.n.c .t{color:#94a3b8}
+.n.v{border-color:#e5e7eb;background:linear-gradient(180deg,#1b2230,#121823);box-shadow:0 0 0 6px rgba(255,255,255,.04),0 20px 50px rgba(0,0,0,.4)}
+.n.v .t{color:#e5e7eb}
+.n.pass{border-color:#15803d;background:#0e1f15}.n.pass .t{color:#4ade80}
+.n.rev{border-color:#b45309;background:#21170b}.n.rev .t{color:#fbbf24}
+.n.hum{border-color:#6b7280}.n.hum .t{color:#d1d5db}
+svg.ar{position:absolute;inset:0;overflow:visible}
+.lbl{position:absolute;font-size:13px;font-weight:600;color:#cbd5e1;background:#0b0f16;padding:2px 8px;border-radius:6px;border:1px solid #273042}
+.legend{position:absolute;left:60px;bottom:40px;display:flex;gap:26px;font-size:15px;color:#cbd5e1}
+.legend span{display:flex;align-items:center;gap:9px}.legend i{width:16px;height:16px;border-radius:5px;display:inline-block}
+.rule{position:absolute;right:60px;bottom:30px;font-size:16px;font-weight:700;color:#fdba74;padding:12px 18px;border-radius:12px;border:1px solid #9a3412;background:#1c120a}
+/* ---------------- score */
+#score{width:1600px;height:400px}
+.tiles{position:absolute;left:60px;right:60px;top:150px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.tile{border-radius:20px;padding:26px 26px 22px;background:#121823;border:1px solid #273042}
+.tile .num{font-family:"Inter Display",Inter;font-size:66px;font-weight:800;letter-spacing:-2px;line-height:1}
+.tile .lab{font-size:17px;font-weight:700;margin-top:10px;color:#e5e7eb}
+.tile .det{font-size:14px;color:#8b949e;margin-top:4px}
+.green{color:#4ade80}.orange{color:#fb923c}
+/* ---------------- verdicts */
+#verd{width:1600px;height:380px}
+.vcols{position:absolute;left:60px;right:60px;top:145px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.vc{border-radius:20px;padding:24px;border:1.5px solid}
+.vc .b{display:inline-block;font-weight:800;font-size:22px;letter-spacing:1px;padding:8px 16px;border-radius:10px;color:#fff;margin-bottom:14px}
+.vc p{font-size:16.5px;line-height:1.5;color:#cbd5e1}.vc p b{color:#fff}
+</style></head><body>
+
+<!-- ======================= BANNER -->
+<div class="card" id="banner"><div class="grid-bg"></div>
+ <div class="l">
+  <div class="kick">META GLOBAL AI DEVELOPER HACKATHON 2026 · INDIE TRACK</div>
+  <h1><span>Tally Pack</span></h1>
+  <div class="tagline"><b>Muse</b> places the order.<br><b>Tally</b> proves it was packed right.</div>
+  <div class="desc">A fixed camera watches the packing desk. SAM 3.1 tracks every item, a plain-code verifier proves the box matches the order, and Muse Glimmer repairs perception errors under the verifier's watch.</div>
+  <div class="chips">
+   <div class="chip"><i style="background:#3b82f6"></i>SAM 3.1</div>
+   <div class="chip"><i style="background:#f97316"></i>Muse Glimmer 30B</div>
+   <div class="chip"><i style="background:#22c55e"></i>0 false clearances</div>
+   <div class="chip"><i style="background:#a3a3a3"></i>open weights · 1× A100</div>
+  </div>
+ </div>
+ <div class="r"><img src="shot.jpg"></div>
+ <div class="pill" id="p2">ID SWITCH DETECTED<small>verifier: NEEDS REVIEW</small></div>
+ <div class="pill" id="p1">✓ PASS<small>after a verified repair</small></div>
+</div>
+
+<!-- ======================= ARCHITECTURE -->
+<div class="card" id="arch"><div class="grid-bg"></div>
+ <h2>How Tally works</h2>
+ <div class="sub">Models propose. Plain code decides. Every verdict comes from the verifier, never from a model's opinion.</div>
+ <svg class="ar" width="1600" height="820">
+  <defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+  <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fb923c"/></marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4ade80"/></marker></defs>
+  <g stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#m)">
+   <path d="M290,225 L348,225"/>
+   <path d="M612,225 C690,225 690,335 733,355"/>
+   <path d="M290,455 L348,455"/>
+   <path d="M602,455 L733,455"/>
+   <path d="M612,660 C690,660 700,525 733,515"/>
+   <path d="M1017,355 C1060,355 1060,235 1098,235"/>
+   <path d="M1017,470 C1060,470 1060,485 1098,485"/>
+   <path d="M1342,485 L1393,485"/>
+  </g>
+  <path d="M1220,553 L1220,675 L1064,675" stroke="#fb923c" stroke-width="2.5" fill="none" marker-end="url(#mo)"/>
+  <path d="M880,612 L880,552" stroke="#4ade80" stroke-width="2.5" fill="none" marker-end="url(#mg)"/>
+ </svg>
+ <div class="n c" style="left:60px;top:170px;width:230px"><div class="t">INPUT</div><div class="h">Order text</div><div class="p">“2 maggi, one parle g and a coke”</div></div>
+ <div class="n g" style="left:350px;top:155px;width:262px"><div class="t">MUSE GLIMMER 30B</div><div class="h">Contract compiler</div><div class="p">Free text → validated SKU counts. Unknown items are asked, never guessed.</div></div>
+ <div class="n c" style="left:60px;top:400px;width:230px"><div class="t">INPUT</div><div class="h">Fixed camera</div><div class="p">Overhead view of the packing desk</div></div>
+ <div class="n s" style="left:350px;top:385px;width:252px"><div class="t">SAM 3.1</div><div class="h">Track every item</div><div class="p">Category prompts (“packet”, “soda can”), one stable ID per item</div></div>
+ <div class="n c" style="left:350px;top:595px;width:262px"><div class="t">PLAIN CODE</div><div class="h">Appearance identity</div><div class="p">Which product is each packet? Ambiguous → C5</div></div>
+ <div class="n v" style="left:735px;top:300px;width:282px;height:250px"><div class="t">PLAIN CODE · 0 MODEL CALLS</div><div class="h" style="font-size:25px">Ledger + Verifier</div>
+  <div class="p" style="color:#cbd5e1;font-size:15px;line-height:1.7">C1 order matches the box<br>C2 nothing appears or vanishes<br>C3 no teleporting tracks<br>C4 no ID switches<br>C5 every product clearly identified</div></div>
+ <div class="n pass" style="left:1100px;top:170px;width:242px"><div class="t">CONSISTENT EVIDENCE</div><div class="h">✓ PASS  /  ✕ FAIL</div><div class="p">With the exact reason, e.g. “missing: 0 lays in box”</div></div>
+ <div class="n rev" style="left:1100px;top:420px;width:242px"><div class="t">INCONSISTENT EVIDENCE</div><div class="h">NEEDS REVIEW</div><div class="p">Code turns each violation into candidate repairs</div></div>
+ <div class="n hum" style="left:1395px;top:430px;width:150px"><div class="t">ESCALATE</div><div class="h">Human sign-off</div></div>
+ <div class="n g" style="left:690px;top:612px;width:374px"><div class="t">MUSE GLIMMER 30B · INVESTIGATOR</div><div class="h">Looks at crops, picks one repair</div><div class="p">merge IDs · drop a spurious span · split · set identity, or escalate</div></div>
+ <div class="lbl" style="left:892px;top:566px;color:#4ade80;border-color:#166534">gate: kept only if issues drop and none appear</div>
+ <div class="legend"><span><i style="background:#f97316"></i>Muse Glimmer 30B</span><span><i style="background:#3b82f6"></i>SAM 3.1</span><span><i style="background:#64748b"></i>plain code, no model</span></div>
+ <div class="rule">Glimmer can never clear a box. Only the verifier issues PASS or FAIL.</div>
+</div>
+
+<!-- ======================= SCORECARD -->
+<div class="card" id="score"><div class="grid-bg"></div>
+ <h2>Results on PackBench</h2>
+ <div class="sub">30 fixed-camera packing clips · each run as rendered and with an injected tracker ID switch · one A100, open weights</div>
+ <div class="tiles">
+  <div class="tile"><div class="num">15<span style="color:#6b7280">/15</span></div><div class="lab">packing errors caught</div><div class="det">missing · extra · wrong look-alike item</div></div>
+  <div class="tile"><div class="num green">0<span style="color:#6b7280">/30</span></div><div class="lab">false clearances</div><div class="det">a wrong box was never marked PASS</div></div>
+  <div class="tile"><div class="num">58<span style="color:#6b7280">/60</span></div><div class="lab">correct verdicts</div><div class="det">the 2 others were honestly sent to a human</div></div>
+  <div class="tile"><div class="num orange">≈9 s</div><div class="lab">per Muse Glimmer decision</div><div class="det">down from 100–155 s with fast mode</div></div>
+ </div>
+</div>
+
+<!-- ======================= VERDICTS -->
+<div class="card" id="verd"><div class="grid-bg"></div>
+ <h2>Three verdicts, one rule</h2>
+ <div class="sub">A verdict is issued only on consistent evidence. Otherwise Tally investigates, and if it still can't prove anything, it asks.</div>
+ <div class="vcols">
+  <div class="vc" style="border-color:#15803d;background:#0d1d13"><div class="b" style="background:#16a34a">PASS</div><p>Every ordered item ended in the box and nothing else did. <b>All five checks hold.</b></p></div>
+  <div class="vc" style="border-color:#b91c1c;background:#200e0e"><div class="b" style="background:#dc2626">FAIL</div><p>The evidence is consistent but the box is wrong: <b>“missing: 0 lays in box, order says 1”</b>.</p></div>
+  <div class="vc" style="border-color:#b45309;background:#21170b"><div class="b" style="background:#d97706">NEEDS REVIEW</div><p>Tracks are inconsistent (ID switch, teleport, ambiguous product). <b>Glimmer repairs under the gate, or a human signs off.</b></p></div>
+ </div>
+</div>
+</body></html>
